@@ -6,6 +6,7 @@
   export let phrase = "Enter your phrase here...";
   export let delay = 0;
   export let speed = 100;
+  export let url = "#";
   let index = 0;
   let typewriter;
   let typedChars = "";
@@ -22,16 +23,16 @@
     }
   };
 
-  const start = () => {
-    setTimeout(() => typing(), delay);
+  const start = (_delay = delay) => {
+    setTimeout(() => typing(), _delay);
   };
 
   const typing = () => (typewriter = setInterval(typeChar, speed));
 
-  const replay = () => {
+  const replay = (delay) => {
     typedChars = "";
     finished = false;
-    start();
+    start(delay);
   };
 
   onMount(() => start());
@@ -39,19 +40,14 @@
 
 <section>
   <h3>
-    <a
-      class:hover={finished}
-      href="https://myfunscience.com/course-tag/full-year-2021-2022/"
-      >{@html typedChars}</a
-    >
+    <a class:finished href={url}>{@html typedChars}</a>
     {#if finished}
-      <button on:click={replay}>&#8634;</button>
+      <button on:click={() => replay(0)}>&#8634;</button>
     {/if}
   </h3>
 </section>
 
 <style>
-  /* @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap'); */
   section {
     position: relative;
     display: flex;
@@ -62,7 +58,6 @@
   }
   h3 {
     position: relative;
-    /* width: 100%; */
     font-size: 3em;
     line-height: 3em;
     font-weight: 400;
@@ -95,14 +90,13 @@
     color: #307ad5;
     text-decoration: none;
     border: 0em solid #fdc735;
-    /* transition: all 400ms ease-in-out; */
   }
   a:hover {
     padding: 0.5em 1em;
     border: 0.5em dotted #fdc735;
     transition: all 400ms ease-in-out;
   }
-  .hover {
+  .finished {
     padding: 0.5em;
     text-decoration: none;
     border-bottom: 0.5em solid #fdc735;
